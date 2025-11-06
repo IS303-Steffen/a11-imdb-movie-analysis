@@ -7,6 +7,8 @@ student_test_module.py
 test_cases_table_output.html
 test_cases_drafts.json
 markdown_generated.md
+data_cleaning_original_file.ipynb
+imdb_top_1000.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -9,7 +9,7 @@ Note that the output of this program is kind of ugly. At this point, you are jus
 -	pandas
 
 ## Logical Flow:
-1. Import data from a .csv:
+### 1. Import data from an Excel file:
 -	Using the provided `practice_names.csv` file in your repository, create a DataFrame using the `read_csv` function from `pandas`.
 
 > Hint: For readability, I recommend putting an extra blank line between each print statement you print out below
