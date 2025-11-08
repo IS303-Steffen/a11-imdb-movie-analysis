@@ -22,9 +22,9 @@ def test_01_everything_plus_new_column(current_test_name):
         
         rec = pc_get_or_create(current_test_name, max_score=max_score)
         CURRENT_DIR = os.path.dirname(__file__)
-        pickle_file_path = os.path.join(CURRENT_DIR, '01.pkl')
+        pickle_file_path = os.path.join(CURRENT_DIR, '01.xlsx')
         # Expected data
-        expected_data = pd.read_pickle(pickle_file_path)
+        expected_data = pd.read_excel(pickle_file_path)
         expected_data.query("index ==16", inplace=True)
         
         expected_data_str = expected_data.iloc[0].to_string(index=False)

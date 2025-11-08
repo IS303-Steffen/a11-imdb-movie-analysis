@@ -22,9 +22,9 @@ def test_02_newer_comedies(current_test_name):
         
         rec = pc_get_or_create(current_test_name, max_score=max_score)
         CURRENT_DIR = os.path.dirname(__file__)
-        pickle_file_path = os.path.join(CURRENT_DIR, '02.pkl')
+        pickle_file_path = os.path.join(CURRENT_DIR, '02.xlsx')
         # Expected data
-        expected_data = pd.read_pickle(pickle_file_path)
+        expected_data = pd.read_excel(pickle_file_path)
         expected_data = expected_data['title']
         expected_data_str = expected_data.to_string(index=False)
         
