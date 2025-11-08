@@ -9,6 +9,11 @@ test_cases_drafts.json
 markdown_generated.md
 data_cleaning_original_file.ipynb
 imdb_top_1000.csv
+mean_rating_by_genre.xlsx
+newer_comedies.xlsx
+everything_plus_new_column.xlsx
+pickler.py
+TEST_RESULTS_SUMMARY.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -134,7 +139,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/

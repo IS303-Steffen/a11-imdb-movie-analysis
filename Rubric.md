@@ -14,76 +14,46 @@ The tests will ignore spacing, capitalization, and punctuation, but you will fai
     </tr>
 </thead>
 <tbody>
-    <tr style="text-align: left">
-        <td>1. Printed Messages</td>
-        <td>
-        <b>Input test cases used:</b> 1<br><br>
-        Your printed output must be the same as the expected output of each input test case. 
-        <br>
-        <br>
-        See the <code>descriptions_ot_test_cases</code> folder for expected printed messages for each input test case.
+    <tr>
+        <td>1. Everything plus new column</td>
+        <td tr style="text-align: left">
+        <b>Input test cases used:</b> None<br><br>
+        Your exported <code>everything_plus_new_column.xlsx</code> file needs to have all valid values.
         </td>
-        <td>85</td>
+        <td>33</td>
     </tr>
     <tr>
-        <td>2. Excel File Created</td>
+        <td>2. Newer comedies</td>
         <td style="text-align: left">
         <b>Input test cases used:</b> None<br><br>
-          Your code should produce an Excel file named <code>mean_salary_by_city.xlsx</code> with the following data. The test will pass as long as the numbers are within .2 of the expected values, so don't worry about rounding.<br><br>
-          <table border="1" class="dataframe">
-            <thead>
-                <tr style="text-align: right;">
-                <th>city</th>
-                <th>salary</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <td>Boston</td>
-                <td>81500.00</td>
-                </tr>
-                <tr>
-                <td>San Francisco</td>
-                <td>69000.00</td>
-                </tr>
-                <tr>
-                <td>Seattle</td>
-                <td>75666.67</td>
-                </tr>
-            </tbody>
-            </table>
+        Your exported <code>newer_comedies.xlsx</code> file needs to have all valid values.
         </td>
-        <td>10</td>
+        <td>33</td>
+    </tr>
+      <tr>
+        <td>3. Mean rating by genre</td>
+        <td style="text-align: left">
+        <b>Input test cases used:</b> None<br><br>
+        Your exported <code>newer_comedies.xlsx</code> file needs to have all valid values.
+        </td>
+        <td>33</td>
     </tr>
     <tr>
-        <td>3. Sufficient Comments</td>
+        <td>4. Sufficient Comments</td>
         <td style="text-align: left">
         <b>Input test cases used:</b> None<br><br>
-        Your code must include at least <code>5</code> comments. You can use any form of commenting:
+        Your code must include at least <code>4</code> comments. You can use any form of commenting:
         <ul>
           <li><code>#</code></li> 
           <li><code>''' '''</code></li>
           <li><code>""" """</code></li>
         </ul>
         </td>
-        <td>5</td>
+        <td>1</td>
     </tr>
     <tr>
         <td colspan="2">Total Points</td>
         <td>100</td>
   </tr>
 </tbody>
-</table>
-
-## Test Cases
-If you fail a test during a specific test case, see the `descriptions_of_test_cases` folder for the following:
-<table border="1" style="width: 100%; text-align: left;">
-  <tr>
-    <th>Test Case</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>Input Test Case 01</td>
-    <td>There are no inputs in this assignment, so only one set of possible printed messages should ever print out.</td>
-  </tr>
 </table>
