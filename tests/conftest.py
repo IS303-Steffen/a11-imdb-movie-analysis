@@ -8,7 +8,7 @@ if they reference it as a parameter.
 # =======
 
 import pytest, re, sys, os, json, traceback, pickle, inspect, multiprocessing, \
-       ast, importlib, difflib, copy, builtins, sqlite3, csv,  types
+       ast, importlib, difflib, copy, builtins, sqlite3, csv,  types, site, sysconfig
 from io import StringIO
 from collections.abc import Iterable
 from datetime import date, timedelta
@@ -70,7 +70,7 @@ default_module_to_test = detect_module(solution_module, student_module)
 default_module_to_test_2 = detect_module(solution_module_2, student_module_2)
 
 # default per-test-case timeout amount in seconds:
-default_timeout_seconds = 7
+default_timeout_seconds = 90
 
 # default decimal place to round to for regex comparisons
 # helpful for accounting for different rounding methods students could use.
@@ -578,7 +578,7 @@ def load_student_code(current_test_name, inputs, input_test_case=None, module_to
     except Exception as e:
         exception_message_for_students(e, input_test_case, current_test_name)
 
-def _load_student_code_subprocess(shared_data, current_test_name, inputs, input_test_case, module_to_test, function_tests, class_tests):
+def _load_student_code_subprocess(shared_data, current_test_name, inputs, input_test_case, module_to_test, function_tests, class_tests, pre_imports = None):
     """
     Executes the student's code in a subprocess, capturing inputs, outputs, exceptions, and testing functions/classes.
     """
@@ -630,14 +630,35 @@ def _load_student_code_subprocess(shared_data, current_test_name, inputs, input_
         raised_exceptions = []       
         exception_handlers = get_exception_handlers_from_source(code)
 
-        trace_function = create_trace_function(
-            raised_exceptions,
-            exception_handlers,
-            scoped_locals,
-            student_filename=os.path.abspath(module_file_path),
-        )
+        student_root = os.path.abspath(os.path.dirname(module_file_path))
 
-        sys.settrace(trace_function)
+        # where Python lives
+        stdlib_dir = os.path.abspath(sysconfig.get_paths()["stdlib"])
+        # all site-packages dirs
+        site_dirs = set(map(os.path.abspath, site.getsitepackages() + [site.getusersitepackages()]))
+
+        blocked_prefixes = {stdlib_dir, *site_dirs}
+
+        def _is_blocked(path):
+            ap = os.path.abspath(path)
+            return any(ap.startswith(p + os.sep) or ap == p for p in blocked_prefixes)
+
+        def _is_student(path):
+            ap = os.path.abspath(path)
+            return ap.startswith(student_root + os.sep) or ap == student_root
+
+        inner_trace = create_trace_function(raised_exceptions, exception_handlers, scoped_locals,
+                                            student_filename=os.path.abspath(module_file_path))
+
+        def gate(frame, event, arg):
+            fn = frame.f_code.co_filename
+            if _is_blocked(fn):
+                return None                # don’t trace stdlib/site-packages
+            if _is_student(fn):
+                return inner_trace(frame, event, arg)  # trace all student files in their folder
+            return None                    # ignore everything else
+
+        sys.settrace(gate)
 
         # Redirect sys.stdout to capture print statements
         old_stdout = sys.stdout
@@ -1741,23 +1762,33 @@ def timeout_message_for_students(input_test_case, current_test_name):
     I put this in a function just so there is one central place
     to edit the message if I change it in the future.
     """
-    test_case_inputs = input_test_case.get("inputs", "No inputs")
-    test_case_inputs = [f'{index}: "{input}"' for index, input in enumerate(test_case_inputs, start=1)]
-    test_case_inputs = '\n'.join(test_case_inputs)
+    if isinstance(input_test_case, dict):
+        test_case_inputs = input_test_case.get("inputs", "No inputs")
+        test_case_inputs = [f'{index}: "{input}"' for index, input in enumerate(test_case_inputs, start=1)]
+        test_case_inputs = '\n'.join(test_case_inputs)
 
-    return format_error_message(
-                custom_message=(f"TimeoutError\n\n"
-                                f"### How to fix it:\n"
-                                f"--------------\n"
-                                f"You got a Timeout Error, meaning this Input Test Case didn't complete after {default_timeout_seconds} seconds. "
-                                f"The test timed out during Input Test Case {input_test_case.get('id_input_test_case')}. To try and identify the problem, run your code like normal, but enter these EXACT inputs "
-                                f"in this order (without the quotes):\n"
-                                f"```\n{test_case_inputs}\n```\n"
-                                f"Most likely, "
-                                f"when your code uses these inputs your code never exits properly. This could be due to you asking for more inputs() than the test is expecting, or due to an infinite loop.\n\n"),
-                input_test_case=input_test_case,
-                current_test_name=current_test_name,
-                )
+        return format_error_message(
+                    custom_message=(f"TimeoutError\n\n"
+                                    f"### How to fix it:\n"
+                                    f"--------------\n"
+                                    f"You got a Timeout Error, meaning this Input Test Case didn't complete after {default_timeout_seconds} seconds. "
+                                    f"The test timed out during Input Test Case {input_test_case.get('id_input_test_case')}. To try and identify the problem, run your code like normal, but enter these EXACT inputs "
+                                    f"in this order (without the quotes):\n"
+                                    f"```\n{test_case_inputs}\n```\n"
+                                    f"Most likely, "
+                                    f"when your code uses these inputs your code never exits properly. This could be due to you asking for more inputs() than the test is expecting, or due to an infinite loop.\n\n"),
+                    input_test_case=input_test_case,
+                    current_test_name=current_test_name,
+                    )
+    else:
+        return format_error_message(
+                    custom_message=(f"TimeoutError\n\n"
+                                    f"### How to fix it:\n"
+                                    f"--------------\n"
+                                    f"You got a Timeout Error, meaning the test couldn't run your code after {default_timeout_seconds} seconds. "
+                                    f"Reach out to your professor."),
+                    current_test_name=current_test_name,
+                    )
 
 # =========================
 # ASSORTED HELPER FUNCTIONS
