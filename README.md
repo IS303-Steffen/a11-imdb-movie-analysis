@@ -20,6 +20,9 @@ The dataset you'll be using is the top rated 1000 movies from imdb.com. It conta
 - `openpyxl`
     - you don't need to include `import openpyxl`, but it needs to be installed so that `pandas` can read and create excel files.
 
+## Note so you don't get frustrated
+If you have the Excel Viewer extension installed and you click on an Excel file in VS Code you'll be able to see it. Just PLEASE remember, that if you open up an Excel file, then change that Excel file with your code, and then go back to look at the Excel file, you WON'T see the change UNTIL you close the window with the excel file and then open it back up again. If it seems like your code isn't exporting Excel files correctly, just try closing out of the excel file window and see if that fixes it.
+
 ## Logical Flow:
 ### 1. Import data from an Excel file:
 - Using the provided `imdb_top_1000.xlsx` file in your repository, create a DataFrame using the `.read_excel()` function from `pandas`. Name your DataFrame whatever you want, but these instructions will just use `df` to refer to your DataFrame.
@@ -40,7 +43,7 @@ The dataset you'll be using is the top rated 1000 movies from imdb.com. It conta
     - It will probably print out vertically, that's totally fine.
 
 ### 4. Inserting a new column:
-- Add a column called `runtime_hours` to the DataFrame. It should be 6th column (right after `runtime_minutes`). Use the `.insert()` method to do this. This column should be calculated based on the `runtime_minutes` column.
+- Add a column called `runtime_hours` to the DataFrame. It should be 6th column (right after `runtime_minutes`. Just remember that column indices are 0 based). Use the `.insert()` method to do this. This column should be calculated based on the `runtime_minutes` column.
     - You can use this to convert minutes to hours: `(df["runtime_minutes"] / 60).round(2)`
 - Print out the `title`, `runtime_minutes`, and `runtime_hours` columns with `.head()` to see if you did it right. It should look like this:
 ```
