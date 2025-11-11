@@ -62,7 +62,7 @@ def test_01_everything_plus_new_column(current_test_name):
                             f"### Your excel file values:\n"
                             f"```\n{actual_data_str}\n```\n"
                             f"### How to fix it:\n"
-                            f"You likely aren't following the instructions to change the value of the row at index 16"),
+                            f"Make sure you're changing the value of the row at index 16. Especially make sure you inserted the new column as the 6th column (meaning index 5, not index 6 since column locations are 0 based)."),
             current_test_name=current_test_name,
             input_test_case=None,
             display_inputs=False,
