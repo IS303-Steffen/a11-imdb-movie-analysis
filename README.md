@@ -63,11 +63,11 @@ If you have the Excel Viewer extension installed and you click on an Excel file 
 - Export the results to an excel file using the `.to_excel()` method. Use the `index=False` parameter in the `to_excel()` function to leave out the index values in the exported file. Call the file `newer_comedies.xlsx`. It needs to be called that exactly for the automated tests to pass.
 
 ### 6. Using math functions:
-- Use the `.max()` function on the `gross_earnings_dollars` to find out what the highest grossing amount is in the dataset.
+- Use the `.max()` function on the `gross_earnings_dollars` to find out what the highest grossing amount is in the dataset. Print it out.
 
 ### 7. Group by and math functions:
 - Use the `.groupby()` function to view the `mean`  `imdb_rating` (rounded to the 2nd decimal place) grouped by `primary_genre`. In otherwords, you're finding out what the mean rating is for each genre of movie. When using `.groupby()` remember that the structure looks like this:
-    - `df.groupby('column_you_are_grouping_on')['column_you_are_calculating_on].mean().round(2)`
+    - `df.groupby('column_you_are_grouping_on')['column_you_are_calculating_on'].mean().round(2)`
 - Print out the results
 - Export the results to an excel file using `.to_excel()`, but keep the indices this time. Call the excel file `mean_rating_by_genre.xlsx`.
 
